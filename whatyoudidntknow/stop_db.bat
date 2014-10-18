@@ -1,0 +1,2 @@
+net stop OracleServiceCSPR
+net stop OracleOraDb11g_home1TNSListener

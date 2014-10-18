@@ -1,0 +1,4 @@
+select to_number(d.dept_xml.extract('/Department/@id')) id
+     , cast(d.dept_xml.extract('/Department/Name/text()') as varchar2(30)) name
+from departments d
+/
