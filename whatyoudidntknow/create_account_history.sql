@@ -25,6 +25,8 @@ organization external
 )
 /
 pause
+select * from account_history_csv;
+pause
 create table account_history as
 select rownum id,
        to_date(operation_date, 'yyyy-mm-dd') operation_date,
