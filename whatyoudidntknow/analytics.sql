@@ -1,6 +1,29 @@
 set echo on
 set linesize 120
 @create_account_history
+pause Przypomnienie - funkcje agreguj¹ce
+select trunc(operation_date, 'MON') month
+     , sum(amount)
+  from account_history
+ group by trunc(operation_date, 'MON');
+pause
+select trunc(operation_date, 'MON') month
+     , sum(amount)
+     , amount
+  from account_history
+ group by trunc(operation_date, 'MON');
+pause
+drop type t_amounts;
+create type t_amounts as table of number
+/
+select trunc(operation_date, 'MON') month
+     , sum(amount)
+     , cast(collect(amount) as t_amounts) amounts
+  from account_history
+ group by trunc(operation_date, 'MON')
+.
+pause
+/
 pause Przyklady funkcji analitycznych
 select operation_date "OP. DATE",
        amount,
@@ -20,8 +43,11 @@ select *
                amount,
                operation_date - lag(operation_date) over(order by operation_date) days_from_last_operation
           from account_history)
- order by days_from_last_operation desc nulls last;
+ order by days_from_last_operation asc nulls first
+.
 pause
+/
+rem dygresja: funkcje agregujace first, last
 drop table t_docs;
 create table t_docs (id number primary key, name varchar2(30), version number, doc_content varchar2(30));
 begin

@@ -25,9 +25,9 @@ select * from emp;
 pause
 variable newsalary number;
 exec :newsalary := 1000;
-update emp e 
-   set e.sal = :newsalary
- where e.empno = empno;
+update emp 
+   set sal = :newsalary
+ where empno = empno;
 pause
 set echo off
 @Types.pck

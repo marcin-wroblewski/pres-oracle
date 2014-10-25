@@ -1,6 +1,59 @@
 set echo on
 set serveroutput on
 set linesize 100
+column displayed_name format a10 trunc
+column path format a10 trunc
+drop table t_hier;
+create table t_hier(id number primary key, parent_id number, name varchar2(10));
+begin
+insert into t_hier values(1, null, 'A');
+insert into t_hier values(2, 1, 'B');
+insert into t_hier values(3, 2, 'C');
+insert into t_hier values(4, 2, 'D');
+insert into t_hier values(5, 1, 'E');
+insert into t_hier values(6, 1, 'F');
+insert into t_hier values(7, 6, 'G');
+end;
+/
+select * from t_hier;
+
+pause
+with hier(id, name, lev, path) as (
+   select id, name, 1, name
+     from t_hier 
+    where parent_id is null
+   union all
+   select this.id, this.name, parent.lev + 1, parent.path || '/' || this.name
+     from t_hier this join hier parent on parent.id = this.parent_id
+)
+select * from hier;
+pause
+with hier(id, name, lev, path) as (
+   select id, name, 1, name
+     from t_hier 
+    where parent_id is null
+   union all
+   select this.id, this.name, parent.lev + 1, parent.path || '/' || this.name
+     from t_hier this join hier parent on parent.id = this.parent_id
+)
+search depth first by id set search_order
+select path, lpad(name, 3*(lev-1) + length(name)) displayed_name 
+from hier
+order by search_order;
+pause
+with hier(id, name, lev, path) as (
+   select id, name, 1, name
+     from t_hier 
+    where parent_id is null
+   union all
+   select this.id, this.name, parent.lev + 1, parent.path || '/' || this.name
+     from t_hier this join hier parent on parent.id = this.parent_id
+)
+search breadth first by id set search_order
+select path, lpad(name, 3*(lev-1) + length(name)) displayed_name 
+from hier
+order by search_order;
+pause
 @Sudoku.pck
 var s varchar2(81)
 column s new_value s

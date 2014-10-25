@@ -22,7 +22,6 @@ select day_col, val
     val['WORKING_DAYS'] = sum(val)[day_col not in ('SATURDAY','SUNDAY')],
     val['WEEKEND'] = sum(val)[day_col in ('SATURDAY','SUNDAY')],
     val['WEEK'] = val['WORKING_DAYS'] + val['WEEKEND'],
-    val['WEEKEND'] = sum(val)[day_col in ('SATURDAY','SUNDAY')],
     val['MON_WED_FRI'] = val['MONDAY'] + val['WEDNESDAY'] + val['FRIDAY'],
     val['COMPLETE_NONSENSE'] = 3 * val['FRIDAY'] / ( 4 * val['THURSDAY'] )
   );
