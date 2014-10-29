@@ -47,7 +47,6 @@ select *
 .
 pause
 /
-rem dygresja: funkcje agregujace first, last
 drop table t_docs;
 create table t_docs (id number primary key, name varchar2(30), version number, doc_content varchar2(30));
 begin

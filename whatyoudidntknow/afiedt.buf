@@ -1,2 +1,0 @@
-select /*+ all_rows */ * from sys_objects where object_type = 'PACKAGE'
-/
